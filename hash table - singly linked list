@@ -23,7 +23,7 @@ typedef struct bucket{
 
 //hash함수
 int hashFunction(int key){
-    return strlen(key)/SIZE;
+    return key/SIZE;
 }
 
 //노드 생성 함수
@@ -35,7 +35,7 @@ Node* createNode(int key, int value){
     newNode->key = key;
     newNode->value = value;
     newNode->next = NULL;
-
+    
     return newNode;
 }
 
@@ -68,7 +68,7 @@ void remove_node(int key){
     cur = hashTable[hashIndex].head;
 
     if(cur == NULL){
-        printf("존재하지 않는 key 입니다.");
+        printf("존재하지 않는 key 입니다.\n");
         return;
     }
     
@@ -88,11 +88,12 @@ void remove_node(int key){
         cur = cur->next;
     }
 
-    printf("key가 존재하지 않습니다.");
+    printf("key가 존재하지 않습니다.\n");
     return;
 
 }
 
+//노드 검색
 void search_node(int key){
     int hashIndex = hashFunction(key);
 
@@ -101,23 +102,24 @@ void search_node(int key){
     cur = hashTable[hashIndex].head;
 
     if(cur == NULL){
-        printf("존재하지 않는 key 입니다.");
+        printf("존재하지 않는 key 입니다.\n");
         return;
     }
     
     while(cur != NULL){
         if(cur->key == key){
-            printf("key = %s, value = %d", cur->key, cur->value);
+            printf("key = %d, value = %d\n", cur->key, cur->value);
             return;
         }
         cur = cur->next;
     }
 
-    printf("key가 존재하지 않습니다.");
+    printf("key가 존재하지 않습니다.\n");
     return;
 }
 
-void view_node(){
+
+void view_table(){
     Node* scan;
     int i = 0;
     for(i=0; i<SIZE; i++){
@@ -125,7 +127,7 @@ void view_node(){
         printf("bucket[%d] : ", i);
     
         while(scan != NULL){
-            printf("(key: %s, value: %d)->",scan->key,scan->value);
+            printf("(key: %d, value: %d)->",scan->key,scan->value);
             scan = scan->next;
         }
 
@@ -142,11 +144,17 @@ int main()
 
     int key;
     int value;
+    int num;
 
-    printf("=")*30;
-    printf("1.추가\n2.삭제\n3.검색\n4.테이블\n0.종료\n=>");
-    int num = scanf("%d", &num);
-    while(num != 0){
+
+
+    
+    while(1){
+        printf("=====================================");
+        printf("\n");
+        printf("1.추가 2.삭제 3.검색 4.테이블 0.종료\n : ");
+        scanf("%d", &num);
+
         if(num == 1){
             printf("key: ");
             scanf("%d", &key);
@@ -154,21 +162,34 @@ int main()
             scanf("%d", &value);
 
             insert_node(key, value);
+
+            continue;
         }
         else if(num == 2){
             printf("key: ");
             scanf("%d", &key);
 
             remove_node(key);
+
+            continue;
         }
         else if(num == 3){
             printf("key: ");
             scanf("%d", &key);
 
             search_node(key);
+
+            continue;
         }
         else if(num == 4){
-            view_node();
+            view_table();
+
+            continue;
+        }
+        else{
+            printf("종료\n");
+
+            break;
         }
     }
 
